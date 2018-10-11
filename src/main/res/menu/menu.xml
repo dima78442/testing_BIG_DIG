@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:yourapp="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_sort"
+        android:title="sort1"
+        android:icon="@drawable/baseline_sort_by_alpha_white_18dp"
+        yourapp:showAsAction="always"
+         />
+    <item
+        android:id="@+id/action_sort2"
+        android:title="sort2"
+        android:icon="@drawable/sharp_sort_white_18dp"
+        yourapp:showAsAction="always"
+        />
+</menu>
