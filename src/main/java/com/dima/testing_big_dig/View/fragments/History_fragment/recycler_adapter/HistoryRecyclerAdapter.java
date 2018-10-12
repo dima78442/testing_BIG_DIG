@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 
 
-public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecyclerAdapter.MyViewHolder> {
+public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecyclerAdapter.MyViewHolder>{
 
     private ArrayList<Reference> dataSet;
 
@@ -43,7 +43,6 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
                                            int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.reference_card, parent, false);
-
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }

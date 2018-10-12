@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar)findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(toolbar);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu,menu);
@@ -51,4 +52,5 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MENU",item.getTitle().toString());
         return super.onOptionsItemSelected(item);
     }
+
 }

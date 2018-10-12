@@ -3,64 +3,35 @@ package com.dima.testing_big_dig.Room;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
 public class DataProvider extends ContentProvider {
     final String LOG_TAG = "myLogs";
-
-    // // Константы для БД
-    // БД
-    static final String DB_NAME = "mydb";
-    static final int DB_VERSION = 1;
-
-    // Таблица
-    static final String CONTACT_TABLE = "contacts";
-
-    // Поля
-    static final String CONTACT_ID = "_id";
-    static final String CONTACT_NAME = "name";
-    static final String CONTACT_EMAIL = "email";
-    //static final String CONTACT_EMAIL = "email";
-
-    // Скрипт создания таблицы
-    static final String DB_CREATE = "create table " + CONTACT_TABLE + "("
-            + CONTACT_ID + " integer primary key autoincrement, "
-            + CONTACT_NAME + " text, " + CONTACT_EMAIL + " text" + ");";
-
     // // Uri
     // authority
     static final String AUTHORITY = "ru.startandroid.providers.AdressBook";
-
     // path
     static final String CONTACT_PATH = "contacts";
-
     // Общий Uri
     public static final Uri CONTACT_CONTENT_URI = Uri.parse("content://"
             + AUTHORITY + "/" + CONTACT_PATH);
-
     // Типы данных
     // набор строк
     static final String CONTACT_CONTENT_TYPE = "vnd.android.cursor.dir/vnd."
             + AUTHORITY + "." + CONTACT_PATH;
-
     // одна строка
     static final String CONTACT_CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd."
             + AUTHORITY + "." + CONTACT_PATH;
-
     //// UriMatcher
     // общий Uri
     static final int URI_CONTACTS = 1;
-
     // Uri с указанным ID
     static final int URI_CONTACTS_ID = 2;
-
     // описание и создание UriMatcher
     private static final UriMatcher uriMatcher;
     static {
@@ -88,7 +59,7 @@ public class DataProvider extends ContentProvider {
                 Log.d(LOG_TAG, "URI_CONTACTS");
                 // если сортировка не указана, ставим свою - по имени
                 if (TextUtils.isEmpty(sortOrder)) {
-                    sortOrder = CONTACT_NAME + " ASC";
+                    sortOrder = DBHelper.DATA_URL + " ASC";
                 }
                 break;
             case URI_CONTACTS_ID: // Uri с ID
@@ -96,16 +67,16 @@ public class DataProvider extends ContentProvider {
                 Log.d(LOG_TAG, "URI_CONTACTS_ID, " + id);
                 // добавляем ID к условию выборки
                 if (TextUtils.isEmpty(selection)) {
-                    selection = CONTACT_ID + " = " + id;
+                    selection = DBHelper.DATA_ID + " = " + id;
                 } else {
-                    selection = selection + " AND " + CONTACT_ID + " = " + id;
+                    selection = selection + " AND " + DBHelper.DATA_ID + " = " + id;
                 }
                 break;
             default:
                 throw new IllegalArgumentException("Wrong URI: " + uri);
         }
         db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.query(CONTACT_TABLE, projection, selection,
+        Cursor cursor = db.query(DBHelper.DATA_TABLE, projection, selection,
                 selectionArgs, null, null, sortOrder);
         // просим ContentResolver уведомлять этот курсор
         // об изменениях данных в CONTACT_CONTENT_URI
@@ -120,7 +91,7 @@ public class DataProvider extends ContentProvider {
             throw new IllegalArgumentException("Wrong URI: " + uri);
 
         db = dbHelper.getWritableDatabase();
-        long rowID = db.insert(CONTACT_TABLE, null, values);
+        long rowID = db.insert(DBHelper.DATA_TABLE, null, values);
         Uri resultUri = ContentUris.withAppendedId(CONTACT_CONTENT_URI, rowID);
         // уведомляем ContentResolver, что данные по адресу resultUri изменились
         getContext().getContentResolver().notifyChange(resultUri, null);
@@ -129,6 +100,7 @@ public class DataProvider extends ContentProvider {
 
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         Log.d(LOG_TAG, "delete, " + uri.toString());
+
         switch (uriMatcher.match(uri)) {
             case URI_CONTACTS:
                 Log.d(LOG_TAG, "URI_CONTACTS");
@@ -137,16 +109,17 @@ public class DataProvider extends ContentProvider {
                 String id = uri.getLastPathSegment();
                 Log.d(LOG_TAG, "URI_CONTACTS_ID, " + id);
                 if (TextUtils.isEmpty(selection)) {
-                    selection = CONTACT_ID + " = " + id;
+                    selection = DBHelper.DATA_ID + " = " + id;
                 } else {
-                    selection = selection + " AND " + CONTACT_ID + " = " + id;
+                    selection = selection + " AND " + DBHelper.DATA_ID + " = " + id;
                 }
                 break;
             default:
                 throw new IllegalArgumentException("Wrong URI: " + uri);
         }
+
         db = dbHelper.getWritableDatabase();
-        int cnt = db.delete(CONTACT_TABLE, selection, selectionArgs);
+        int cnt = db.delete(DBHelper.DATA_TABLE, selection, selectionArgs);
         getContext().getContentResolver().notifyChange(uri, null);
         return cnt;
     }
@@ -163,16 +136,16 @@ public class DataProvider extends ContentProvider {
                 String id = uri.getLastPathSegment();
                 Log.d(LOG_TAG, "URI_CONTACTS_ID, " + id);
                 if (TextUtils.isEmpty(selection)) {
-                    selection = CONTACT_ID + " = " + id;
+                    selection = DBHelper.DATA_ID + " = " + id;
                 } else {
-                    selection = selection + " AND " + CONTACT_ID + " = " + id;
+                    selection = selection + " AND " + DBHelper.DATA_ID + " = " + id;
                 }
                 break;
             default:
                 throw new IllegalArgumentException("Wrong URI: " + uri);
         }
         db = dbHelper.getWritableDatabase();
-        int cnt = db.update(CONTACT_TABLE, values, selection, selectionArgs);
+        int cnt = db.update(DBHelper.DATA_TABLE, values, selection, selectionArgs);
         getContext().getContentResolver().notifyChange(uri, null);
         return cnt;
     }
@@ -188,23 +161,4 @@ public class DataProvider extends ContentProvider {
         return null;
     }
 
-    private class DBHelper extends SQLiteOpenHelper {
-
-        public DBHelper(Context context) {
-            super(context, DB_NAME, null, DB_VERSION);
-        }
-
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL(DB_CREATE);
-            ContentValues cv = new ContentValues();
-            for (int i = 1; i <= 3; i++) {
-                cv.put(CONTACT_NAME, "name " + i);
-                cv.put(CONTACT_EMAIL, "email " + i);
-                db.insert(CONTACT_TABLE, null, cv);
-            }
-        }
-
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        }
-    }
 }
