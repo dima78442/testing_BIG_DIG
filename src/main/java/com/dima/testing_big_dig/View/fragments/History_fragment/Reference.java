@@ -6,11 +6,13 @@ public class Reference {
     private String url;
     private String status;
     private String time;
+    private int id;
 
-    public Reference(String url, String status, String time) {
+    public Reference(String url, String status, String time,int id) {
         this.url = url;
         this.status = status;
         this.time = time;
+        this.id =id;
     }
 
     public Reference(){
@@ -26,7 +28,7 @@ public class Reference {
         private String url;
         private String status;
         private String time;
-
+        private int id;
 
         public Builder setUrl(String url) {
             this.url = url;
@@ -46,8 +48,13 @@ public class Reference {
             return this;
         }
 
+        public Builder setId(int id) {
+            this.id = id;
+            return this;
+        }
+
         public Reference build() {
-            return new Reference(this.url, this.status, this.time);
+            return new Reference(this.url, this.status, this.time, this.id);
         }
 
     }
@@ -64,9 +71,7 @@ public class Reference {
         return time;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+    public void setUrl(String url) { this.url = url;}
 
-
+    public int getId() { return id; }
 }

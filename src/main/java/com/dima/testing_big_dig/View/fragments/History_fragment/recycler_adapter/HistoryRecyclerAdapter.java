@@ -24,6 +24,8 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
         CardView cv;
         TextView url;
         TextView time;
+        TextView id;
+        TextView status;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -31,6 +33,8 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
             cv = (CardView)itemView.findViewById(R.id.cv);
             url = (TextView)itemView.findViewById(R.id.url);
             time = (TextView)itemView.findViewById(R.id.time);
+            id =(TextView)itemView.findViewById(R.id.id_reference);
+            status =(TextView)itemView.findViewById(R.id.status_reference);
         }
     }
 
@@ -53,16 +57,22 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
         TextView url = holder.url;
         TextView time = holder.time;
         CardView cv = holder.cv;
+        TextView id = holder.id;
+        TextView status = holder.status;
 
         url.setText(dataSet.get(listPosition).getUrl());
         time.setText(dataSet.get(listPosition).getTimeAt());
+        id.setText(dataSet.get(listPosition).getId()+"");
 
         if(dataSet.get(listPosition).getStatus().equals("1")){
             cv.setBackgroundColor(Color.GREEN);
+            status.setText("1");
         }else if(dataSet.get(listPosition).getStatus().equals("2")){
             cv.setBackgroundColor(Color.RED);
+            status.setText("2");
         }else if(dataSet.get(listPosition).getStatus().equals("3")){
             cv.setBackgroundColor(Color.GRAY);
+            status.setText("3");
         }
     }
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dima.testing_big_dig.Presenter.Presenter;
@@ -22,12 +24,11 @@ import com.dima.testing_big_dig.View.fragments.History_fragment.HistorySort.Comp
 import com.dima.testing_big_dig.View.fragments.History_fragment.recycler_adapter.HistoryRecyclerAdapter;
 import com.dima.testing_big_dig.View.fragments.History_fragment.recycler_adapter.RecyclerOnClik.RecyclerItemClickListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 public class History extends Fragment{
-
     public static ArrayList<Reference> references;
     private HistoryRecyclerAdapter historyRecyclerAdapter;
 
@@ -65,9 +66,15 @@ public class History extends Fragment{
                     public void onClick(View view) {
                         Intent launchIntent = getContext().getPackageManager().getLaunchIntentForPackage("com.dima.testing_big_dig_b");
                         if (launchIntent != null) {
+                            CardView cardView = (CardView)view.findViewById(R.id.cv);
+                            TextView url = view.findViewById(R.id.url);
+                            TextView id = view.findViewById(R.id.id_reference);
+                            TextView status = view.findViewById(R.id.status_reference);
                             Bundle bundle = new Bundle();
-                            bundle.putString("from","test");
-                            bundle.putString("url","1");
+                            bundle.putString("id",id.getText().toString());
+                            bundle.putString("from","history");
+                            bundle.putString("status",status.getText().toString());
+                            bundle.putString("url",url.getText().toString());
                             bundle.putString("time",timeGetter());
                             launchIntent.putExtra("Reference",bundle);
                             startActivity(launchIntent);//null pointer check in case package name was not found
@@ -83,8 +90,9 @@ public class History extends Fragment{
         }));
     }
     public String timeGetter(){
-        Date currentTime = Calendar.getInstance().getTime();
-        return Long.toString(currentTime.getTime());
+        String currentDateandTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        Log.d("tm","" + currentDateandTime);
+        return currentDateandTime;
     }
 
     @Override
@@ -106,5 +114,4 @@ public class History extends Fragment{
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

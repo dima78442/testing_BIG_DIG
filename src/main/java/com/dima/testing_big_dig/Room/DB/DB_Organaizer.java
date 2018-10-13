@@ -49,7 +49,7 @@ public class DB_Organaizer {
                         "ID = " + c.getInt(idColIndex) +
                                 ", name = " + c.getString(nameColIndex) +
                                 ", email = " + c.getString(emailColIndex));
-                Reference reference = new Reference().newBuilder().setUrl(url).setTimeAt(time).setStatus(status).build();
+                Reference reference = new Reference().newBuilder().setUrl(url).setTimeAt(time).setStatus(status).setId(id).build();
                 references.add(reference);
             } while (c.moveToNext());
         } else
