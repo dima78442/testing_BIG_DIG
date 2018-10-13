@@ -6,13 +6,19 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.dima.testing_big_dig.Presenter.Presenter;
 import com.dima.testing_big_dig.R;
+import com.dima.testing_big_dig.View.fragments.History_fragment.HistorySort.ComparatorStatus;
+import com.dima.testing_big_dig.View.fragments.History_fragment.HistorySort.ComparatorTime;
 import com.dima.testing_big_dig.View.fragments.History_fragment.recycler_adapter.HistoryRecyclerAdapter;
 import com.dima.testing_big_dig.View.fragments.History_fragment.recycler_adapter.RecyclerOnClik.RecyclerItemClickListener;
 
@@ -21,12 +27,17 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class History extends Fragment{
+
+    public static ArrayList<Reference> references;
+    private HistoryRecyclerAdapter historyRecyclerAdapter;
+
     public History() {
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.history,container,false);
     }
 
@@ -40,10 +51,9 @@ public class History extends Fragment{
         recyclerView.setLayoutManager(llm);
 
         Presenter presenter = new Presenter(getActivity());
-        ArrayList<Reference> references;
         references = presenter.QueryRefernceList();
 
-        HistoryRecyclerAdapter historyRecyclerAdapter = new HistoryRecyclerAdapter(references);
+        historyRecyclerAdapter = new HistoryRecyclerAdapter(references);
         recyclerView.setAdapter(historyRecyclerAdapter);
 
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
@@ -75,6 +85,26 @@ public class History extends Fragment{
     public String timeGetter(){
         Date currentTime = Calendar.getInstance().getTime();
         return Long.toString(currentTime.getTime());
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d("MENU",item.getTitle().toString());
+        if (item.getTitle().equals("sort1")) {
+            Log.d("1","status");
+            references.sort(ComparatorStatus.sort_status);
+            historyRecyclerAdapter.notifyDataSetChanged();
+        }else if (item.getTitle().equals("sort2")) {
+            Log.d("1","date");
+            references.sort(ComparatorTime.sort_time);
+            historyRecyclerAdapter.notifyDataSetChanged();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

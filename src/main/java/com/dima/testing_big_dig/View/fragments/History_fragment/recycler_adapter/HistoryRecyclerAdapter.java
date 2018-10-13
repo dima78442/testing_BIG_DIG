@@ -57,11 +57,11 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
         url.setText(dataSet.get(listPosition).getUrl());
         time.setText(dataSet.get(listPosition).getTimeAt());
 
-        if(dataSet.get(listPosition).getStatus() == 1){
+        if(dataSet.get(listPosition).getStatus().equals("1")){
             cv.setBackgroundColor(Color.GREEN);
-        }else if(dataSet.get(listPosition).getStatus() == 2){
+        }else if(dataSet.get(listPosition).getStatus().equals("2")){
             cv.setBackgroundColor(Color.RED);
-        }else if(dataSet.get(listPosition).getStatus() == 3){
+        }else if(dataSet.get(listPosition).getStatus().equals("3")){
             cv.setBackgroundColor(Color.GRAY);
         }
     }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,7 @@ import android.widget.EditText;
 
 import com.dima.testing_big_dig.R;
 
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Test extends Fragment {
@@ -50,8 +51,9 @@ public class Test extends Fragment {
     }
 
     public String timeGetter(){
-        Date currentTime = Calendar.getInstance().getTime();
-        return Long.toString(currentTime.getTime());
+        String currentDateandTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        Log.d("tm","" + currentDateandTime);
+        return currentDateandTime;
     }
 
 

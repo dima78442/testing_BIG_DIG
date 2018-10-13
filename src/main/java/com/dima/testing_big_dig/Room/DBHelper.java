@@ -33,13 +33,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DB_CREATE);
-        ContentValues cv = new ContentValues();
+        /*ContentValues cv = new ContentValues();
         for (int i = 1; i <= 3; i++) {
             cv.put(DATA_URL, "url " + i);
             cv.put(DATA_STATUS, "status " + i);
             cv.put(DATA_TIME, "time" + i);
             db.insert(DATA_TABLE, null, cv);
-        }
+        }*/
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

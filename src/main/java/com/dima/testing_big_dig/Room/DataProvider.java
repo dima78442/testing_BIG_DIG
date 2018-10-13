@@ -58,9 +58,9 @@ public class DataProvider extends ContentProvider {
             case URI_CONTACTS: // общий Uri
                 Log.d(LOG_TAG, "URI_CONTACTS");
                 // если сортировка не указана, ставим свою - по имени
-                if (TextUtils.isEmpty(sortOrder)) {
-                    sortOrder = DBHelper.DATA_URL + " ASC";
-                }
+                //if (TextUtils.isEmpty(sortOrder)) {
+                //    sortOrder = DBHelper.DATA_URL + " ASC";
+               // }
                 break;
             case URI_CONTACTS_ID: // Uri с ID
                 String id = uri.getLastPathSegment();
@@ -77,7 +77,7 @@ public class DataProvider extends ContentProvider {
         }
         db = dbHelper.getWritableDatabase();
         Cursor cursor = db.query(DBHelper.DATA_TABLE, projection, selection,
-                selectionArgs, null, null, sortOrder);
+                selectionArgs, null, null, null);
         // просим ContentResolver уведомлять этот курсор
         // об изменениях данных в CONTACT_CONTENT_URI
         cursor.setNotificationUri(getContext().getContentResolver(),
