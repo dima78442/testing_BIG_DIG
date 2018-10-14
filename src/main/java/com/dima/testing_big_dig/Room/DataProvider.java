@@ -63,7 +63,9 @@ public class DataProvider extends ContentProvider {
                // }
                 break;
             case URI_CONTACTS_ID: // Uri с ID
+
                 String id = uri.getLastPathSegment();
+
                 Log.d(LOG_TAG, "URI_CONTACTS_ID, " + id);
                 // добавляем ID к условию выборки
                 if (TextUtils.isEmpty(selection)) {
@@ -71,6 +73,7 @@ public class DataProvider extends ContentProvider {
                 } else {
                     selection = selection + " AND " + DBHelper.DATA_ID + " = " + id;
                 }
+
                 break;
             default:
                 throw new IllegalArgumentException("Wrong URI: " + uri);
@@ -82,10 +85,12 @@ public class DataProvider extends ContentProvider {
         // об изменениях данных в CONTACT_CONTENT_URI
         cursor.setNotificationUri(getContext().getContentResolver(),
                 CONTACT_CONTENT_URI);
+
         return cursor;
     }
 
     public Uri insert(Uri uri, ContentValues values) {
+
         Log.d(LOG_TAG, "insert, " + uri.toString());
         if (uriMatcher.match(uri) != URI_CONTACTS)
             throw new IllegalArgumentException("Wrong URI: " + uri);
@@ -94,7 +99,9 @@ public class DataProvider extends ContentProvider {
         long rowID = db.insert(DBHelper.DATA_TABLE, null, values);
         Uri resultUri = ContentUris.withAppendedId(CONTACT_CONTENT_URI, rowID);
         // уведомляем ContentResolver, что данные по адресу resultUri изменились
+
         getContext().getContentResolver().notifyChange(resultUri, null);
+
         return resultUri;
     }
 
@@ -102,24 +109,32 @@ public class DataProvider extends ContentProvider {
         Log.d(LOG_TAG, "delete, " + uri.toString());
 
         switch (uriMatcher.match(uri)) {
+
             case URI_CONTACTS:
+
                 Log.d(LOG_TAG, "URI_CONTACTS");
                 break;
+
             case URI_CONTACTS_ID:
+
                 String id = uri.getLastPathSegment();
                 Log.d(LOG_TAG, "URI_CONTACTS_ID, " + id);
+
                 if (TextUtils.isEmpty(selection)) {
                     selection = DBHelper.DATA_ID + " = " + id;
                 } else {
                     selection = selection + " AND " + DBHelper.DATA_ID + " = " + id;
                 }
                 break;
+
             default:
+
                 throw new IllegalArgumentException("Wrong URI: " + uri);
         }
 
         db = dbHelper.getWritableDatabase();
         int cnt = db.delete(DBHelper.DATA_TABLE, selection, selectionArgs);
+
         getContext().getContentResolver().notifyChange(uri, null);
         return cnt;
     }
@@ -127,35 +142,49 @@ public class DataProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
         Log.d(LOG_TAG, "update, " + uri.toString());
+
         switch (uriMatcher.match(uri)) {
+
             case URI_CONTACTS:
+
                 Log.d(LOG_TAG, "URI_CONTACTS");
 
                 break;
             case URI_CONTACTS_ID:
+
                 String id = uri.getLastPathSegment();
                 Log.d(LOG_TAG, "URI_CONTACTS_ID, " + id);
+
                 if (TextUtils.isEmpty(selection)) {
                     selection = DBHelper.DATA_ID + " = " + id;
                 } else {
                     selection = selection + " AND " + DBHelper.DATA_ID + " = " + id;
                 }
+
                 break;
             default:
                 throw new IllegalArgumentException("Wrong URI: " + uri);
         }
+
         db = dbHelper.getWritableDatabase();
         int cnt = db.update(DBHelper.DATA_TABLE, values, selection, selectionArgs);
+
         getContext().getContentResolver().notifyChange(uri, null);
+
         return cnt;
     }
 
     public String getType(Uri uri) {
         Log.d(LOG_TAG, "getType, " + uri.toString());
+
         switch (uriMatcher.match(uri)) {
+
             case URI_CONTACTS:
+
                 return CONTACT_CONTENT_TYPE;
+
             case URI_CONTACTS_ID:
+
                 return CONTACT_CONTENT_ITEM_TYPE;
         }
         return null;

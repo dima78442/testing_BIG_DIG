@@ -12,11 +12,8 @@ import com.dima.testing_big_dig.View.PagerAdapter.PagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
-   // @BindView(R.id.viewpager)
-    ViewPager viewPager;
-
-    //@BindView(R.id.tab_layout)
-    TabLayout tabLayout;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
 
     private Toolbar toolbar;
 
@@ -24,15 +21,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         tabs();
+
         toolbar();
     }
     private void tabs (){
+
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
+
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
+
     }
     private void toolbar(){
         toolbar = (Toolbar)findViewById(R.id.toolbar_actionbar);
@@ -44,11 +46,5 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu,menu);
         return false;
     }
-
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d("MENU",item.getTitle().toString());
-        return super.onOptionsItemSelected(item);
-    }*/
 
 }

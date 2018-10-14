@@ -32,18 +32,22 @@ public class Test extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         final EditText editText = (EditText)view.findViewById(R.id.editText);
+
         Button button = (Button)view.findViewById(R.id.button);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent launchIntent = getContext().getPackageManager().getLaunchIntentForPackage("com.dima.testing_big_dig_b");
+
                 if (launchIntent != null) {
+
                     Bundle bundle = new Bundle();
                     bundle.putString("from","test");
                     bundle.putString("url",editText.getText().toString());
                     bundle.putString("time",timeGetter());
                     launchIntent.putExtra("Reference",bundle);
+
                     startActivity(launchIntent);//null pointer check in case package name was not found
                 }
             }

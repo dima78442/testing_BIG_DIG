@@ -16,15 +16,18 @@ public class DB_Organaizer {
     private String url;
     private String time;
     private String status;
-    private ArrayList<Reference> references = new ArrayList<>();
+    private static ArrayList<Reference> references = new ArrayList<>();
 
     public DB_Organaizer(Activity activity) {
         this.activity = activity;
     }
 
     public ArrayList<Reference> dataQuery(){
+        references.removeAll(references);
+
         Uri DATA_URI = Uri
                 .parse("content://ru.startandroid.providers.AdressBook/contacts");
+
         Cursor c = activity.getContentResolver().query(DATA_URI, null, null,
                 null, null);
         //activity.startManagingCursor(c);
@@ -49,8 +52,10 @@ public class DB_Organaizer {
                         "ID = " + c.getInt(idColIndex) +
                                 ", name = " + c.getString(nameColIndex) +
                                 ", email = " + c.getString(emailColIndex));
-                Reference reference = new Reference().newBuilder().setUrl(url).setTimeAt(time).setStatus(status).setId(id).build();
+                Reference reference = new Reference()
+                        .newBuilder().setUrl(url).setTimeAt(time).setStatus(status).setId(id).build();
                 references.add(reference);
+
             } while (c.moveToNext());
         } else
             Log.d("RX", "0 rows");
